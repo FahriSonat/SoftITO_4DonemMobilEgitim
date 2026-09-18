@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stok Takip</title>
+    <style> 
+        :root {
+            --primary: #c75b13;
+            --primary-dark: #ec9e0c;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #050c16;
+            --muted: #09130b;
+            --border: #cfa415;
+        }
+         * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  header {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff;
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+  }
+  header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+  header p { opacity: 0.9; font-size: 1.05rem; }
+  nav {
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 0.8rem 1rem;
+    flex-wrap: wrap;
+  }
+  nav a {
+    color: var(--primary-dark);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  nav a:hover { text-decoration: underline; }
+  main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+  }
+  @media (max-width: 700px) {
+    main { grid-template-columns: 1fr; }
+  }
+  article {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.75rem;
+    margin-bottom: 1.75rem;
+  }
+  article h2 {
+    color: var(--primary-dark);
+    margin-bottom: 0.75rem;
+    font-size: 1.35rem;
+  }
+  section { margin-bottom: 1.5rem; }
+  section h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.6rem;
+    color: var(--text);
+  }
+  ul.ozellik-listesi {
+    list-style: none;
+    padding: 0;
+  }
+  ul.ozellik-listesi li {
+    padding: 0.5rem 0 0.5rem 1.6rem;
+    position: relative;
+    border-bottom: 1px dashed var(--border);
+  }
+  ul.ozellik-listesi li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--primary);
+    font-weight: bold;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.5rem;
+    font-size: 0.92rem;
+  }
+  caption {
+    text-align: left;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    color: var(--muted);
+  }
+  th, td {
+    text-align: left;
+    padding: 0.65rem 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    background: #eff6ff;
+    color: var(--primary-dark);
+  }
+  tbody tr:hover { background: #f1f5f9; }
+    </style>
+</head>
+<body>
+    
+    <header>
+        <h1> Stok Takip</h1>
+        <p>Küçük işletmeler için basit ve hızlı stok/envanter takip uygulaması</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#hakkinda">Hakkında</a></li>
+            <li><a href="#ozellikler">Özellikler</a></li>
+            <li><a href="#planlar">Planlar</a></li>
+            <li><a href="#iletisim">İletişim</a></li>
+        </ul>
+    </nav>
+
+    
+<main>
+  <div>
+    <article id="hakkinda">
+      <h2>Uygulama Hakkında</h2>
+      <section>
+        <p>StokTakip, işletmenizin ürün stoklarını anlık olarak takip etmenizi sağlayan, Flutter ile geliştirilmiş
+        mobil bir uygulamadır. Barkod okuma, kritik stok uyarıları ve raporlama özellikleriyle envanter
+        yönetimini kolaylaştırır.</p>
+      </section>
+    </article>
+ 
+    <article id="ozellikler">
+      <h2>Öne Çıkan Özellikler</h2>
+      <section>
+        <h3>Uygulama neler sunuyor?</h3>
+        <ul class="ozellik-listesi">
+          <li>Barkod / QR kod ile hızlı ürün ekleme</li>
+          <li>Kritik stok seviyesinde otomatik bildirim</li>
+          <li>Kategori bazlı arama ve filtreleme</li>
+          <li>Çevrimdışı çalışma ve otomatik senkronizasyon</li>
+          <li>PDF/Excel formatında stok raporu dışa aktarma</li>
+        </ul>
+      </section>
+    </article>
+ 
+    <article id="planlar">
+      <h2>Abonelik Planları</h2>
+      <section>
+        <table>
+          <caption>Plan karşılaştırması</caption>
+          <thead>
+            <tr>
+              <th scope="col">Plan</th>
+              <th scope="col">Ürün Limiti</th>
+              <th scope="col">Kullanıcı Sayısı</th>
+              <th scope="col">Aylık Ücret</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Başlangıç</td>
+              <td>100 ürün</td>
+              <td>1 kullanıcı</td>
+              <td>Ücretsiz</td>
+            </tr>
+            <tr>
+              <td>Standart</td>
+              <td>1.000 ürün</td>
+              <td>3 kullanıcı</td>
+              <td>₺149</td>
+            </tr>
+            <tr>
+              <td>Profesyonel</td>
+              <td>Sınırsız</td>
+              <td>10 kullanıcı</td>
+              <td>₺399</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </article>
+  </div>
+ 
+ <!-- <aside>
+    <h2>Hemen İndir</h2>
+    <p>StokTakip'i ücretsiz deneyin, dilediğiniz zaman planınızı yükseltin.</p>
+    <a class="indir-btn" href="#">Google Play'den İndir</a>
+    <a class="indir-btn" href="#">App Store'dan İndir</a>
+    <p>Sürüm 1.0 · Android 8+ ve iOS 14+ ile uyumludur.</p>
+  </aside>
+-->
+</main>
+
+
+<footer id="iletisim">
+  <p>© 2026 StokTakip. Tüm hakları saklıdır.</p>
+  <p>İletişim: <a href="mailto:destek@stoktakip.app">destek@stoktakip.app</a></p>
+</footer>
+
+</body>
+</html>
