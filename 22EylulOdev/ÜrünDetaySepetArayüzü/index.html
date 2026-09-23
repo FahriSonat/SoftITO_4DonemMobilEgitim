@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ürün Detayı - E-Ticaret Arayüzü</title>
+  <link rel="stylesheet" href="/22EylulOdev/ÜrünDetaySepetArayüzü/styles.css" />
+</head>
+<body>
+
+  <!-- 1. Sticky Mobil Menü Çubuğu -->
+  <header class="navbar">
+    <button class="nav-icon" aria-label="Geri Dön">‹</button>
+    <h1 class="nav-title">Ürün Detayı</h1>
+    <button class="nav-icon" aria-label="Sepet">🛒</button>
+  </header>
+
+  <!-- Mobil Konteyner (max-width: 480px) -->
+  <main class="product-page">
+
+    <!-- 2. Görsel Alanı ve Absolute Rozetler -->
+    <section class="gallery-wrapper">
+      <img
+        src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80" 
+        alt="Kırmızı Koşu Ayakkabısı" 
+        class="product-image"
+      />
+      <span class="badge badge-discount">%25 İndirim</span>
+      <span class="badge badge-shipping">Ücretsiz Kargo</span>
+    </section>
+
+    <!-- Ürün Bilgi Alanı -->
+    <section class="product-info">
+      <span class="brand-tag">Koşu & Performans</span>
+      <h2 class="product-title">Nike Air Max Velocity X</h2>
+      
+      <div class="rating-row">
+        <span class="stars">★★★★★</span>
+        <span class="reviews">(128 değerlendirme)</span>
+      </div>
+
+      <p class="product-desc">
+        Hafif nefes alabilen file üst kısım ve her adımda darbe emilimi sağlayan Air taban teknolojisiyle tasarlandı.
+      </p>
+
+      <!-- 3. Flexbox Beden / Numara Çipleri -->
+      <div class="size-selector">
+        <label class="section-label">Beden Seçimi</label>
+        <div class="chip-group">
+          <input type="radio" name="size" id="size-39" value="39" />
+          <label for="size-39" class="chip">39</label>
+
+          <input type="radio" name="size" id="size-40" value="40" />
+          <label for="size-40" class="chip">40</label>
+
+          <input type="radio" name="size" id="size-41" value="41" checked />
+          <label for="size-41" class="chip">41</label>
+
+          <input type="radio" name="size" id="size-42" value="42" />
+          <label for="size-42" class="chip">42</label>
+
+          <input type="radio" name="size" id="size-43" value="43" />
+          <label for="size-43" class="chip">43</label>
+
+          <input type="radio" name="size" id="size-44" value="44" />
+          <label for="size-44" class="chip">44</label>
+
+          <input type="radio" name="size" id="size-45" value="45" disabled />
+          <label for="size-45" class="chip disabled">45</label>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 4. Fixed Alt Bar -->
+  <footer class="bottom-action-bar">
+    <div class="price-container">
+      <span class="old-price">3.999,00 TL</span>
+      <span class="current-price">2.999,25 TL</span>
+    </div>
+    <button class="add-to-cart-btn" type="button">Sepete Ekle</button>
+  </footer>
+
+</body>
+</html>
