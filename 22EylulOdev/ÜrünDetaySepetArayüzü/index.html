@@ -1,86 +1,168 @@
-<!DOCTYPE html>
+<!-- Hocam ilk attığım ödev tasarım için yaptığım test dosyasıydı dosyalar karıştığı için yanlış attım özür dilerim
+      doğru ödevi şimdi attım.
+-->
+
+
+<!doctype html>
 <html lang="tr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ürün Detayı - E-Ticaret Arayüzü</title>
-  <link rel="stylesheet" href="/22EylulOdev/ÜrünDetaySepetArayüzü/styles.css" />
-</head>
-<body>
-
-  <!-- 1. Sticky Mobil Menü Çubuğu -->
-  <header class="navbar">
-    <button class="nav-icon" aria-label="Geri Dön">‹</button>
-    <h1 class="nav-title">Ürün Detayı</h1>
-    <button class="nav-icon" aria-label="Sepet">🛒</button>
-  </header>
-
-  <!-- Mobil Konteyner (max-width: 480px) -->
-  <main class="product-page">
-
-    <!-- 2. Görsel Alanı ve Absolute Rozetler -->
-    <section class="gallery-wrapper">
-      <img
-        src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80" 
-        alt="Kırmızı Koşu Ayakkabısı" 
-        class="product-image"
-      />
-      <span class="badge badge-discount">%25 İndirim</span>
-      <span class="badge badge-shipping">Ücretsiz Kargo</span>
-    </section>
-
-    <!-- Ürün Bilgi Alanı -->
-    <section class="product-info">
-      <span class="brand-tag">Koşu & Performans</span>
-      <h2 class="product-title">Nike Air Max Velocity X</h2>
-      
-      <div class="rating-row">
-        <span class="stars">★★★★★</span>
-        <span class="reviews">(128 değerlendirme)</span>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Court 01 · WALKER</title>
+    <link rel="stylesheet" href="/22EylulOdev/ÜrünDetaySepetArayüzü/styles.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a class="brand" href="#">walker</a
+        ><span>Her adımda rahatlık.</span
+        ><button popovertarget="cart"> Sepetim</button>
+      </nav>
+    </header>
+    <main>
+      <p class="breadcrumb">Koleksiyon / Sneaker / <b>Court 01</b></p>
+      <div class="product">
+        <section class="visual">
+          <div class="photo">
+            <div class="badges"><b>%25 İNDİRİM</b><b>KARGO BEDAVA</b></div>
+            <img
+              src="https://images.unsplash.com/photo-1676379827610-c380c52db0c6?auto=format&fit=crop&w=1400&q=85"
+              alt="Beyaz Court 01 sneaker"
+            />
+            <p>COURT SERIES — 001 <span>GÜNLÜK / UNISEX</span></p>
+          </div>
+          <p class="caption">
+            Sade, rahat, her güne uygun.<span>WALKER ESSENTIALS</span>
+          </p>
+        </section>
+        <section class="info">
+          <p class="eyebrow">Günlük favoriler <b>Yeni sezon</b></p>
+          <h1>Court 01<small>Gün boyu hafif hisset.</small></h1>
+          <p class="description">
+            Yumuşak dokular ve sade çizgiler. Günlük kombinlerine kolayca eşlik
+            eden rahat bir sneaker.
+          </p>
+          <p class="price">
+            <strong>2.249<small>,00 TL</small></strong
+            ><del>2.999,00 TL</del><em>750 TL avantaj</em>
+          </p>
+          <hr />
+          <p class="color">
+            Renk <b>• Beyaz</b><i aria-label="Beyaz renk"></i>
+          </p>
+          <div class="size-title">
+            <span>Numara seçin</span
+            ><button popovertarget="guide">Numara rehberi ↗</button>
+          </div>
+          <div class="sizes" role="group" aria-label="Numara seçin">
+            <label><input type="radio" name="size" /><span>36</span></label
+            ><label><input type="radio" name="size" /><span>37</span></label
+            ><label><input type="radio" name="size" /><span>38</span></label
+            ><label><input type="radio" name="size" /><span>39</span></label
+            ><label><input type="radio" name="size" /><span>40</span></label
+            ><label><input type="radio" name="size" /><span>41</span></label
+            ><label><input type="radio" name="size" /><span>42</span></label
+            ><label><input type="radio" name="size" /><span>43</span></label
+            ><label
+              ><input type="radio" name="size" disabled /><span>44</span></label
+            ><label
+              ><input type="radio" name="size" disabled /><span>45</span></label
+            >
+          </div>
+          <p class="help">
+            Tam kalıp. Günlük kullandığınız numarayı seçebilirsiniz.
+          </p>
+          <div class="benefits">
+            <p>
+              🚚 <b>Ücretsiz teslimat<small>2–4 iş gününde kapında</small></b>
+            </p>
+            <p>
+              ↩ <b>Kolay iade<small>14 gün içinde ücretsiz</small></b>
+            </p>
+          </div>
+          <details>
+            <summary>Ürün detayları <b>+</b></summary>
+            <p>Minimal silüet, yumuşak iç astar ve esnek kauçuk taban.</p>
+          </details>
+          <details>
+            <summary>Bakım önerileri <b>+</b></summary>
+            <p>Yumuşak, nemli bir bezle temizleyin. Makinede yıkamayın.</p>
+          </details>
+        </section>
       </div>
-
-      <p class="product-desc">
-        Hafif nefes alabilen file üst kısım ve her adımda darbe emilimi sağlayan Air taban teknolojisiyle tasarlandı.
+      <footer>
+        <b>walker</b><span>İyi tasarım. Her adımda.</span
+        ><span>SoftITO Ödev</span>
+      </footer>
+    </main>
+    <aside class="buy">
+      <p><b>Court 01</b><small>Beyaz · Günlük sneaker</small></p>
+      <p class="buy-price">
+        <del>2.999,00 TL</del><b>2.249<small>,00 TL</small></b>
       </p>
-
-      <!-- 3. Flexbox Beden / Numara Çipleri -->
-      <div class="size-selector">
-        <label class="section-label">Beden Seçimi</label>
-        <div class="chip-group">
-          <input type="radio" name="size" id="size-39" value="39" />
-          <label for="size-39" class="chip">39</label>
-
-          <input type="radio" name="size" id="size-40" value="40" />
-          <label for="size-40" class="chip">40</label>
-
-          <input type="radio" name="size" id="size-41" value="41" checked />
-          <label for="size-41" class="chip">41</label>
-
-          <input type="radio" name="size" id="size-42" value="42" />
-          <label for="size-42" class="chip">42</label>
-
-          <input type="radio" name="size" id="size-43" value="43" />
-          <label for="size-43" class="chip">43</label>
-
-          <input type="radio" name="size" id="size-44" value="44" />
-          <label for="size-44" class="chip">44</label>
-
-          <input type="radio" name="size" id="size-45" value="45" disabled />
-          <label for="size-45" class="chip disabled">45</label>
-        </div>
+      <button popovertarget="cart">🛍 Sepete Ekle</button>
+    </aside>
+    <section id="cart" popover>
+      <div class="dialog">
+        <h2>Sepetim</h2>
+        <button popovertarget="cart" popovertargetaction="hide">×</button>
       </div>
+      <article>
+        <img
+          src="https://images.unsplash.com/photo-1676379827610-c380c52db0c6?auto=format&fit=crop&w=300&q=80"
+          alt="Beyaz Court 01 sneaker"
+        />
+        <p>
+          <b>Court 01</b><small>Beyaz · Numara: 40<br />Adet: 1</small
+          ><b>2.249,00 TL</b>
+        </p>
+      </article>
+      <p class="total"><b>Toplam</b><b>2.249,00 TL</b></p>
     </section>
-
-  </main>
-
-  <!-- 4. Fixed Alt Bar -->
-  <footer class="bottom-action-bar">
-    <div class="price-container">
-      <span class="old-price">3.999,00 TL</span>
-      <span class="current-price">2.999,25 TL</span>
-    </div>
-    <button class="add-to-cart-btn" type="button">Sepete Ekle</button>
-  </footer>
-
-</body>
+    <section id="guide" popover>
+      <div class="dialog">
+        <h2>Numara rehberi</h2>
+        <button popovertarget="guide" popovertargetaction="hide">×</button>
+      </div>
+      <p>İki numara arasında kaldığınızda büyük olanı seçin.</p>
+      <table>
+        <tr>
+          <th>EU</th>
+          <th>cm</th>
+          <th>EU</th>
+          <th>cm</th>
+        </tr>
+        <tr>
+          <td>36</td>
+          <td>23</td>
+          <td>41</td>
+          <td>26,5</td>
+        </tr>
+        <tr>
+          <td>37</td>
+          <td>23,5</td>
+          <td>42</td>
+          <td>27</td>
+        </tr>
+        <tr>
+          <td>38</td>
+          <td>24,5</td>
+          <td>43</td>
+          <td>27,5</td>
+        </tr>
+        <tr>
+          <td>39</td>
+          <td>25</td>
+          <td>44</td>
+          <td>28,5</td>
+        </tr>
+        <tr>
+          <td>40</td>
+          <td>25,5</td>
+          <td>45</td>
+          <td>29</td>
+        </tr>
+      </table>
+    </section>
+  </body>
 </html>

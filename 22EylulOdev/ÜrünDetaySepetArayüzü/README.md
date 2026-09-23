@@ -1,3 +1,5 @@
+Hocam yanlış tasarım dosyalarını yükledim en başta o yüzden düzeltme yaptım doğru dosyalar son yüklediğim dosyalardır
+
 Mobil Uyumlu E-Ticaret Ürün Detay Sayfası
 
 CSS3 konumlandırma kuralları ve Flexbox kullanılarak hazırlanmış, mobil öncelikli ürün detay ve sepete ekleme arayüzü.
