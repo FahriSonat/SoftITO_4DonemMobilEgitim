@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Finansım | Öğrenci Bütçe Paneli</title>
+    <style>
+      /* CSS Reset */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      body,
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+      button {
+        font: inherit;
+      }
+
+      :root {
+        --bg: #f4f7ff;
+        --surface: #ffffff;
+        --text: #19213d;
+        --muted: #69738d;
+        --primary: #635bff;
+        --primary-soft: #eeedff;
+        --success: #18a678;
+        --danger: #e64b66;
+        --warning: #f59e0b;
+        --border: #e6e9f2;
+        --shadow: 0 10px 30px rgba(31, 42, 86, 0.08);
+        --radius: 18px;
+        --space-1: 0.5rem;
+        --space-2: 1rem;
+        --space-3: 1.5rem;
+        --space-4: 2rem;
+      }
+
+      body {
+        min-height: 100vh;
+        background: var(--bg);
+        color: var(--text);
+        font-family: Inter, Arial, sans-serif;
+        line-height: 1.5;
+      }
+
+      .page {
+        max-width: 1240px;
+        margin: auto;
+        padding: var(--space-2);
+      }
+
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-2);
+        padding: var(--space-2) 0 var(--space-4);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        font-weight: 800;
+        font-size: 1.15rem;
+      }
+      .brand-mark {
+        display: grid;
+        place-items: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+        background: var(--primary);
+        color: white;
+      }
+      .notification {
+        position: relative;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        border-radius: 12px;
+        padding: 0.65rem 0.8rem;
+        cursor: pointer;
+      }
+      .live-dot {
+        position: absolute;
+        top: 7px;
+        right: 7px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--danger);
+        animation: pulse 1.6s infinite;
+      }
+
+      .intro {
+        margin-bottom: var(--space-3);
+      }
+      h1 {
+        font-size: clamp(2rem, 5vw, 4rem);
+        line-height: 1.08;
+        letter-spacing: -0.055em;
+      }
+      .intro p {
+        margin-top: var(--space-1);
+        color: var(--muted);
+      }
+
+      /* Mobile-first: 1 sütun */
+      .summary-grid,
+      .category-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--space-2);
+      }
+      .summary-grid {
+        margin-bottom: var(--space-4);
+      }
+
+      .card,
+      .panel {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+      .card {
+        padding: var(--space-3);
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease;
+      }
+      .card:hover {
+        transform: translateY(-7px);
+        box-shadow: 0 18px 38px rgba(31, 42, 86, 0.16);
+      }
+      .card-top {
+        display: flex;
+        justify-content: space-between;
+        color: var(--muted);
+      }
+      .icon {
+        display: grid;
+        place-items: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        background: var(--primary-soft);
+      }
+      .amount {
+        margin-top: var(--space-2);
+        font-size: 1.65rem;
+        font-weight: 800;
+      }
+      .change {
+        margin-top: 0.35rem;
+        font-size: 0.9rem;
+        color: var(--success);
+      }
+      .negative {
+        color: var(--danger);
+      }
+
+      .content-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--space-2);
+      }
+      .panel {
+        padding: var(--space-3);
+      }
+      .panel h2 {
+        font-size: 1.15rem;
+        margin-bottom: var(--space-3);
+      }
+      .category {
+        padding: var(--space-2);
+        background: #fafbff;
+        border-radius: 14px;
+      }
+      .category-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+      }
+      .bar {
+        height: 8px;
+        overflow: hidden;
+        margin-top: 0.75rem;
+        background: #e9ecf7;
+        border-radius: 99px;
+      }
+      .bar span {
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+        background: var(--primary);
+      }
+      .category:nth-child(2) .bar span {
+        background: var(--warning);
+      }
+      .category:nth-child(3) .bar span {
+        background: var(--success);
+      }
+
+      .transaction {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 0.9rem 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .transaction:last-child {
+        border-bottom: 0;
+        padding-bottom: 0;
+      }
+      .transaction-icon {
+        display: grid;
+        place-items: center;
+        flex: 0 0 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: var(--primary-soft);
+      }
+      .transaction p {
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+      .transaction strong {
+        margin-left: auto;
+        font-size: 0.95rem;
+      }
+      .income {
+        color: var(--success);
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(230, 75, 102, 0.55);
+        }
+        50% {
+          box-shadow: 0 0 0 7px rgba(230, 75, 102, 0);
+        }
+      }
+
+      /* Tablet: 2 sütun */
+      @media (min-width: 768px) {
+        .page {
+          padding: var(--space-3);
+        }
+        .summary-grid,
+        .category-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .content-grid {
+          grid-template-columns: 1.1fr 0.9fr;
+        }
+      }
+
+      /* Masaüstü: 4 özet kartı */
+      @media (min-width: 1024px) {
+        .page {
+          padding: var(--space-4);
+        }
+        .summary-grid {
+          grid-template-columns: repeat(4, 1fr);
+        }
+        .category-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header>
+        <div class="brand"><span class="brand-mark">₺</span> Finansım</div>
+        <button class="notification" aria-label="Bildirimler">
+          🔔 <span class="live-dot"></span>
+        </button>
+      </header>
+
+      <section class="intro">
+        <h1>Finans Yönetim Paneli</h1>
+        <p>Merhaba Ayşe, Eylül ayındaki bütçe özetin burada.</p>
+      </section>
+
+      <section class="summary-grid" aria-label="Bütçe özeti">
+        <article class="card">
+          <div class="card-top">
+            <span>Toplam Bakiye</span><span class="icon">💳</span>
+          </div>
+          <p class="amount">₺12.480</p>
+          <p class="change">↑ %8,4 bu ay</p>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <span>Gelir</span><span class="icon">↗️</span>
+          </div>
+          <p class="amount">₺18.500</p>
+          <p class="change">↑ %12,1 bu ay</p>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <span>Gider</span><span class="icon">↘️</span>
+          </div>
+          <p class="amount">₺6.020</p>
+          <p class="change negative">↑ %4,8 bu ay</p>
+        </article>
+        <article class="card">
+          <div class="card-top">
+            <span>Tasarruf</span><span class="icon">🎯</span>
+          </div>
+          <p class="amount">₺4.750</p>
+          <p class="change">Hedefin %73'ü</p>
+        </article>
+      </section>
+
+      <section class="content-grid">
+        <article class="panel">
+          <h2>Harcama Dağılımı</h2>
+          <div class="category-grid">
+            <div class="category">
+              <div class="category-row">
+                <span>🛒 Market</span><strong>₺1.860</strong>
+              </div>
+              <div class="bar"><span style="width: 76%"></span></div>
+            </div>
+            <div class="category">
+              <div class="category-row">
+                <span>🚌 Ulaşım</span><strong>₺940</strong>
+              </div>
+              <div class="bar"><span style="width: 48%"></span></div>
+            </div>
+            <div class="category">
+              <div class="category-row">
+                <span>🎬 Eğlence</span><strong>₺620</strong>
+              </div>
+              <div class="bar"><span style="width: 32%"></span></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <h2>Son İşlemler</h2>
+          <div class="transaction">
+            <span class="transaction-icon">🛒</span>
+            <div>
+              <strong>Market alışverişi</strong>
+              <p>Bugün, 14:25</p>
+            </div>
+            <strong>-₺420</strong>
+          </div>
+          <div class="transaction">
+            <span class="transaction-icon">💼</span>
+            <div>
+              <strong>Part-time ödeme</strong>
+              <p>Dün, 10:00</p>
+            </div>
+            <strong class="income">+₺2.500</strong>
+          </div>
+          <div class="transaction">
+            <span class="transaction-icon">🎓</span>
+            <div>
+              <strong>Yurt ödemesi</strong>
+              <p>20 Eylül, 09:12</p>
+            </div>
+            <strong>-₺1.750</strong>
+          </div>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>
