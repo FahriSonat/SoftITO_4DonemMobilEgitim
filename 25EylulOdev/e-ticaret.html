@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kaplan Ticaret</title>
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #ffffff;
+      --card: #f97316;
+      --card-dark: #d85e0a;
+      --border: #ffd08a;
+      --text: #ffffff;
+      --muted: #fff0d7;
+      --orange: #f97316;
+      --orange-hover: #d85e0a;
+      --yellow: #facc15;
+      --yellow-hover: #eab308;
+      --black: #181716;
+      --danger: #991b1b;
+      --font-main: Arial, Helvetica, sans-serif;
+      --shadow: 0 12px 28px rgba(133, 77, 0, 0.18);
+    }
+
+    body {
+      min-height: 100vh;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-main);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 20px 6%;
+      border-bottom: 4px solid var(--yellow);
+      background-color: var(--orange);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+    }
+
+    .logo {
+      color: var(--text);
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .logo span {
+      color: var(--yellow);
+    }
+
+    .cart-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-weight: 700;
+    }
+
+    .cart-summary strong {
+      color: var(--yellow);
+    }
+
+    main {
+      width: min(1200px, 90%);
+      margin: 35px auto;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 28px;
+      padding: 38px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--orange), #fb923c);
+      box-shadow: var(--shadow);
+    }
+
+    .hero::after {
+      position: absolute;
+      right: -60px;
+      bottom: -80px;
+      width: 230px;
+      height: 230px;
+      border-radius: 50%;
+      background-color: var(--yellow);
+      content: "";
+    }
+
+    .hero h1,
+    .hero p {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      margin-bottom: 10px;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+
+    .search-section {
+      margin-bottom: 28px;
+    }
+
+    input,
+    select,
+    button {
+      border-radius: 10px;
+      font: inherit;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 14px;
+      border: 2px solid var(--border);
+      background-color: var(--bg);
+      color: var(--black);
+    }
+
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--orange);
+      box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.15);
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .product-card {
+      overflow: hidden;
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      background: linear-gradient(160deg, var(--card), var(--card-dark));
+      box-shadow: var(--shadow);
+      transition: transform 0.2s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .product-image {
+      height: 205px;
+      overflow: hidden;
+      border-bottom: 3px solid var(--yellow);
+      background-color: var(--card-dark);
+    }
+
+    .product-image img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .product-content {
+      padding: 18px;
+    }
+
+    .product-category {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 20px;
+      background-color: var(--yellow);
+      color: var(--black);
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .product-name {
+      margin: 13px 0 8px;
+      font-size: 1.2rem;
+    }
+
+    .product-price {
+      margin-bottom: 16px;
+      color: var(--yellow);
+      font-size: 1.3rem;
+      font-weight: 800;
+    }
+
+    button {
+      padding: 11px 14px;
+      border: none;
+      cursor: pointer;
+      font-weight: 800;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+      opacity: 0.88;
+      transform: translateY(-2px);
+    }
+
+    .add-cart-button {
+      width: 100%;
+      margin-bottom: 10px;
+      background-color: var(--yellow);
+      color: var(--black);
+    }
+
+    .product-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .edit-button {
+      background-color: #fff0d2;
+      color: var(--black);
+    }
+
+    .delete-button {
+      background-color: var(--danger);
+      color: var(--text);
+    }
+
+    .form-section {
+      margin-top: 42px;
+      padding: 30px;
+      border: 3px solid var(--yellow);
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--orange), var(--card-dark));
+      box-shadow: var(--shadow);
+    }
+
+    .form-section h2 {
+      margin-bottom: 20px;
+    }
+
+    .product-form {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .product-form .full-width {
+      grid-column: 1 / -1;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      grid-column: 1 / -1;
+    }
+
+    .submit-button {
+      background-color: var(--yellow);
+      color: var(--black);
+    }
+
+    .cancel-button {
+      display: none;
+      background-color: #fff0d2;
+      color: var(--black);
+    }
+
+    .empty-message {
+      grid-column: 1 / -1;
+      padding: 30px;
+      border-radius: 12px;
+      background-color: var(--orange);
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    @media (max-width: 650px) {
+      header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .product-form {
+        grid-template-columns: 1fr;
+      }
+
+      .product-form .full-width,
+      .form-actions {
+        grid-column: auto;
+      }
+
+      .hero {
+        padding: 28px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">KAPLAN <span>TİCARET</span></div>
+
+    <div class="cart-summary">
+      <span>Toplam Ürün: <strong id="cartCount">0</strong></span>
+      <span>Sepet Tutarı: <strong id="cartTotal">₺0,00</strong></span>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Kaplan Ticaret</h1>
+      <p>Ürün adına göre arama yapın, sepetinizi yönetin ve yeni ürün ekleyin.</p>
+    </section>
+
+    <section class="search-section">
+      <input
+        id="searchInput"
+        type="search"
+        placeholder="Ürün adına göre ara..."
+        aria-label="Ürün adına göre ara"
+      />
+    </section>
+
+    <section id="productGrid" class="product-grid"></section>
+
+    <section class="form-section">
+      <h2 id="formTitle">Yeni Ürün Ekle</h2>
+
+      <form id="productForm" class="product-form">
+        <input id="nameInput" type="text" placeholder="Ürün adı" required />
+
+        <input
+          id="priceInput"
+          type="number"
+          min="1"
+          placeholder="Fiyat (₺)"
+          required
+        />
+
+        <select id="categoryInput" required>
+          <option value="">Kategori seç</option>
+          <option value="Elektronik">Elektronik</option>
+          <option value="Giyim">Giyim</option>
+          <option value="Ev & Yaşam">Ev & Yaşam</option>
+          <option value="Spor">Spor</option>
+          <option value="Kozmetik">Kozmetik</option>
+          <option value="Kitap">Kitap</option>
+        </select>
+
+        <input
+          id="imageInput"
+          type="url"
+          placeholder="Görsel linki: https://..."
+          required
+        />
+
+        <div class="form-actions">
+          <button id="submitButton" class="submit-button" type="submit">
+            Ürün Ekle
+          </button>
+
+          <button id="cancelButton" class="cancel-button" type="button">
+            İptal
+          </button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    const defaultProducts = [
+      {
+        id: 1,
+        name: "Kablosuz Kulaklık",
+        category: "Elektronik",
+        price: 899,
+        image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        id: 2,
+        name: "Kaplan Desenli Tişört",
+        category: "Giyim",
+        price: 349,
+        image: "https://d1l2kcmc130e06.cloudfront.net/3/images/colors_960x1200/hanes-5280-yellow.jpg"
+      },
+      {
+        id: 3,
+        name: "Modern Masa Lambası",
+        category: "Ev & Yaşam",
+        price: 649,
+        image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        id: 4,
+        name: "Spor Matı",
+        category: "Spor",
+        price: 429,
+        image: "https://www.gaiam.com/cdn/shop/products/05-64061_6MM-GAIAM-ESSENTIALS-YOGA-MAT-TEAL_C_600x.jpg?v=1668557105"
+      },
+      {
+        id: 5,
+        name: "Bakım Seti",
+        category: "Kozmetik",
+        price: 279,
+        image: "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=800&q=80"
+      },
+      {
+        id: 6,
+        name: "Kişisel Gelişim Kitabı",
+        category: "Kitap",
+        price: 189,
+        image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=800&q=80"
+      }
+    ];
+
+    const storageKeys = {
+      products: "kaplanProductsV2",
+      cart: "kaplanCartV2"
+    };
+
+    let products = JSON.parse(localStorage.getItem(storageKeys.products)) || defaultProducts;
+    let cart = JSON.parse(localStorage.getItem(storageKeys.cart)) || [];
+    let editingId = null;
+
+    const elements = {
+      grid: document.getElementById("productGrid"),
+      search: document.getElementById("searchInput"),
+      cartCount: document.getElementById("cartCount"),
+      cartTotal: document.getElementById("cartTotal"),
+      form: document.getElementById("productForm"),
+      formTitle: document.getElementById("formTitle"),
+      name: document.getElementById("nameInput"),
+      price: document.getElementById("priceInput"),
+      category: document.getElementById("categoryInput"),
+      image: document.getElementById("imageInput"),
+      submit: document.getElementById("submitButton"),
+      cancel: document.getElementById("cancelButton")
+    };
+
+    function saveData() {
+      localStorage.setItem(storageKeys.products, JSON.stringify(products));
+      localStorage.setItem(storageKeys.cart, JSON.stringify(cart));
+    }
+
+    function formatPrice(price) {
+      return new Intl.NumberFormat("tr-TR", {
+        style: "currency",
+        currency: "TRY"
+      }).format(price);
+    }
+
+    function escapeHTML(value) {
+      const element = document.createElement("div");
+      element.textContent = value;
+      return element.innerHTML;
+    }
+
+    function renderProducts() {
+      const searchText = elements.search.value.trim().toLocaleLowerCase("tr");
+
+      const filteredProducts = products.filter((product) => {
+        return product.name.toLocaleLowerCase("tr").includes(searchText);
+      });
+
+      if (filteredProducts.length === 0) {
+        elements.grid.innerHTML = `
+          <div class="empty-message">
+            Aradığınız isimde ürün bulunamadı.
+          </div>
+        `;
+        return;
+      }
+
+      elements.grid.innerHTML = filteredProducts.map((product) => `
+        <article class="product-card">
+          <div class="product-image">
+            <img src="${product.image}" alt="${escapeHTML(product.name)}">
+          </div>
+
+          <div class="product-content">
+            <span class="product-category">${escapeHTML(product.category)}</span>
+            <h3 class="product-name">${escapeHTML(product.name)}</h3>
+            <p class="product-price">${formatPrice(product.price)}</p>
+
+            <button class="add-cart-button" data-action="add" data-id="${product.id}">
+              Sepete Ekle
+            </button>
+
+            <div class="product-actions">
+              <button class="edit-button" data-action="edit" data-id="${product.id}">
+                Düzenle
+              </button>
+
+              <button class="delete-button" data-action="delete" data-id="${product.id}">
+                Sil
+              </button>
+            </div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function renderCartSummary() {
+      const total = cart.reduce((sum, product) => sum + product.price, 0);
+
+      elements.cartCount.textContent = cart.length;
+      elements.cartTotal.textContent = formatPrice(total);
+    }
+
+    function addToCart(id) {
+      const product = products.find((item) => item.id === id);
+
+      if (!product) return;
+
+      cart.push(product);
+      saveData();
+      renderCartSummary();
+    }
+
+    function deleteProduct(id) {
+      const product = products.find((item) => item.id === id);
+
+      if (!product || !confirm(`"${product.name}" ürünü silinsin mi?`)) return;
+
+      products = products.filter((item) => item.id !== id);
+      cart = cart.filter((item) => item.id !== id);
+
+      saveData();
+      renderProducts();
+      renderCartSummary();
+    }
+
+    function startEdit(id) {
+      const product = products.find((item) => item.id === id);
+
+      if (!product) return;
+
+      editingId = id;
+      elements.name.value = product.name;
+      elements.price.value = product.price;
+      elements.category.value = product.category;
+      elements.image.value = product.image;
+
+      elements.formTitle.textContent = "Ürünü Düzenle";
+      elements.submit.textContent = "Kaydet";
+      elements.cancel.style.display = "block";
+
+      document.querySelector(".form-section").scrollIntoView({
+        behavior: "smooth"
+      });
+    }
+
+    function resetForm() {
+      editingId = null;
+      elements.form.reset();
+      elements.formTitle.textContent = "Yeni Ürün Ekle";
+      elements.submit.textContent = "Ürün Ekle";
+      elements.cancel.style.display = "none";
+    }
+
+    function handleFormSubmit(event) {
+      event.preventDefault();
+
+      const name = elements.name.value.trim();
+      const price = Number(elements.price.value);
+      const category = elements.category.value;
+      const image = elements.image.value.trim();
+
+      if (!name || !price || !category || !image) return;
+
+      const product = {
+        id: editingId || Date.now(),
+        name,
+        price,
+        category,
+        image
+      };
+
+      if (editingId) {
+        products = products.map((item) => item.id === editingId ? product : item);
+        cart = cart.map((item) => item.id === editingId ? product : item);
+      } else {
+        products.push(product);
+      }
+
+      saveData();
+      resetForm();
+      renderProducts();
+      renderCartSummary();
+    }
+
+    elements.search.addEventListener("input", renderProducts);
+    elements.form.addEventListener("submit", handleFormSubmit);
+    elements.cancel.addEventListener("click", resetForm);
+
+    elements.grid.addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-action]");
+
+      if (!button) return;
+
+      const id = Number(button.dataset.id);
+      const action = button.dataset.action;
+
+      if (action === "add") addToCart(id);
+      if (action === "edit") startEdit(id);
+      if (action === "delete") deleteProduct(id);
+    });
+
+    saveData();
+    renderProducts();
+    renderCartSummary();
+  </script>
+</body>
+</html>

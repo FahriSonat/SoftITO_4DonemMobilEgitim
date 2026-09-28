@@ -1,0 +1,567 @@
+<!doctype html>
+<!-- Belgenin HTML5 standardında olduğunu tarayıcıya bildirir. -->
+<html lang="tr">
+  <!-- Sayfanın dilinin Türkçe olduğunu belirtir. -->
+
+  <head>
+    <!-- Tarayıcının metni UTF-8 karakter setiyle işlemesini sağlar. -->
+    <meta charset="UTF-8" />
+    <!-- Sayfanın mobil cihaz genişliğine uyum sağlamasını sağlar. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Tarayıcı sekmesinde görünen başlığı tanımlar. -->
+    <title>Sipariş &amp; Gelir Kokpit Dashboard</title>
+
+    <style>
+      /* Sayfanın her yerinde tekrar kullanılacak CSS değişkenlerini tanımlar. */
+      :root {
+        --bg: #f8f7f4; /* Ana arka plan rengidir. */
+        --card: #ffffff; /* Kartların beyaz arka plan rengidir. */
+        --border: #e6e5df; /* Kenarlıklarda kullanılacak renktir. */
+        --text: #181716; /* Ana metin rengidir. */
+        --muted: #6b6963; /* Daha az vurgulu metin rengidir. */
+        --clay: #c85a32; /* Ana vurgu ve buton rengidir. */
+        --clay-hover: #b04e29; /* Butonun üzerine gelindiğindeki rengidir. */
+        --font-main:
+          "Plus Jakarta Sans", system-ui, sans-serif; /* Genel yazı tipini ve yedeklerini belirler. */
+        --font-mono:
+          "JetBrains Mono", monospace; /* Sayısal KPI değerleri için monospace yazı tipini belirler. */
+      }
+
+      /* Tüm elemanların kutu hesabını düzenler ve varsayılan boşluklarını sıfırlar. */
+      * {
+        box-sizing: border-box; /* Genişlik ve yüksekliğe padding ile border'ın dahil edilmesini sağlar. */
+        margin: 0; /* Varsayılan dış boşluğu kaldırır. */
+        padding: 0; /* Varsayılan iç boşluğu kaldırır. */
+      }
+
+      /* Sayfanın genel görünümünü tanımlar. */
+      body {
+        background: var(
+          --bg
+        ); /* CSS değişkenindeki arka plan rengini uygular. */
+        color: var(--text); /* Varsayılan metin rengini uygular. */
+        font-family: var(--font-main); /* Genel yazı tipini uygular. */
+        padding: 36px 16px; /* Sayfanın üst-alt ve sağ-sol iç boşluğunu ayarlar. */
+        line-height: 1.5; /* Satır yüksekliğini okunabilir hâle getirir. */
+      }
+
+      /* Tüm dashboard içeriğini ortalayan ve maksimum genişlik veren kapsayıcıdır. */
+      .kokpit {
+        max-width: 960px; /* İçeriğin en fazla 960 piksel genişlemesini sağlar. */
+        margin: 0 auto; /* Kapsayıcıyı yatayda ortalar. */
+      }
+
+      /* Başlık alanının görünümünü tanımlar. */
+      .header {
+        margin-bottom: 24px; /* Başlık ile KPI kartları arasına boşluk ekler. */
+        padding-bottom: 16px; /* Alt çizgiden önce iç boşluk bırakır. */
+        border-bottom: 1px solid var(--border); /* Başlığın altına ince bir ayırıcı çizgi ekler. */
+      }
+
+      /* Küçük, üst başlık metnini biçimlendirir. */
+      .header__tag {
+        font-size: 11px; /* Metni küçük gösterir. */
+        text-transform: uppercase; /* Harfleri büyük harfe dönüştürür. */
+        letter-spacing: 0.12em; /* Harfler arası boşluğu artırır. */
+        color: var(--clay); /* Vurgu rengini uygular. */
+        font-weight: 700; /* Metni kalın gösterir. */
+      }
+
+      /* Ana sayfa başlığını biçimlendirir. */
+      .header__title {
+        font-size: 26px; /* Başlık boyutunu belirler. */
+        font-weight: 700; /* Başlığı kalınlaştırır. */
+        margin-top: 2px; /* Etiket ile başlık arasına küçük boşluk koyar. */
+      }
+
+      /* KPI kartlarını üç sütunlu bir ızgarada yerleştirir. */
+      .kpi-grid {
+        display: grid; /* CSS Grid düzenini etkinleştirir. */
+        grid-template-columns: repeat(
+          3,
+          1fr
+        ); /* Eşit genişlikte üç sütun oluşturur. */
+        gap: 14px; /* Kartlar arasındaki boşluğu belirler. */
+        margin-bottom: 24px; /* KPI alanı ile ana içerik arasına boşluk ekler. */
+      }
+
+      /* Her KPI kartının temel görünümünü tanımlar. */
+      .kpi-card {
+        background: var(--card); /* Kart arka planını beyaz yapar. */
+        border: 1px solid var(--border); /* Kart çevresine kenarlık ekler. */
+        border-radius: 8px; /* Kart köşelerini yuvarlatır. */
+        padding: 14px 18px; /* Kartın iç boşluklarını ayarlar. */
+      }
+
+      /* KPI kartındaki açıklama metnini biçimlendirir. */
+      .kpi-card span {
+        font-size: 12px; /* Açıklama yazı boyutunu belirler. */
+        color: var(--muted); /* Açıklamayı soluk renkte gösterir. */
+        font-weight: 600; /* Açıklamayı yarı kalın gösterir. */
+      }
+
+      /* KPI kartındaki sayısal değeri biçimlendirir. */
+      .kpi-card h3 {
+        font-size: 22px; /* Değer yazı boyutunu belirler. */
+        font-weight: 700; /* Değeri kalın gösterir. */
+        font-family: var(
+          --font-mono
+        ); /* Sayısal değer için monospace font kullanır. */
+        margin-top: 4px; /* Açıklama ile değer arasına boşluk koyar. */
+      }
+
+      /* Form ve liste alanını iki sütunlu bir düzende yerleştirir. */
+      .layout {
+        display: grid; /* CSS Grid düzenini etkinleştirir. */
+        grid-template-columns: 320px 1fr; /* Form için 320px, liste için kalan alanı ayırır. */
+        gap: 24px; /* İki sütun arasındaki boşluğu belirler. */
+      }
+
+      /* Ekran genişliği 768px veya daha az olduğunda çalışacak mobil kuralları başlatır. */
+      @media (max-width: 768px) {
+        /* Mobilde ana düzeni ve KPI alanını tek sütuna düşürür. */
+        .layout,
+        .kpi-grid {
+          grid-template-columns: 1fr; /* Tek, tam genişlikte sütun oluşturur. */
+        }
+      }
+
+      /* Form ve liste panellerinin ortak görünümünü tanımlar. */
+      .panel {
+        background: var(--card); /* Panel arka planını beyaz yapar. */
+        border: 1px solid var(--border); /* Panelin çevresine kenarlık ekler. */
+        border-radius: 10px; /* Panel köşelerini yuvarlatır. */
+        padding: 20px; /* Panel iç boşluğunu belirler. */
+      }
+
+      /* Panel başlıklarını biçimlendirir. */
+      .panel h4 {
+        font-size: 15px; /* Başlık boyutunu belirler. */
+        font-weight: 700; /* Başlığı kalın gösterir. */
+        margin-bottom: 14px; /* Başlık ile içerik arasına boşluk ekler. */
+        padding-bottom: 8px; /* Başlığın alt çizgisinden önce boşluk bırakır. */
+        border-bottom: 1px solid var(--border); /* Başlık altına ayırıcı çizgi ekler. */
+      }
+
+      /* Her form alanının dış boşluğunu tanımlar. */
+      .field {
+        margin-bottom: 12px; /* Bir sonraki alanla arasına boşluk ekler. */
+      }
+
+      /* Form etiketlerini biçimlendirir. */
+      .field label {
+        display: block; /* Etiketi satırın tamamını kaplayan blok eleman yapar. */
+        font-size: 12px; /* Etiket boyutunu belirler. */
+        font-weight: 600; /* Etiketi yarı kalın gösterir. */
+        margin-bottom: 4px; /* Etiket ile giriş alanı arasına boşluk koyar. */
+      }
+
+      /* Formdaki input ve select elemanlarına ortak stil uygular. */
+      .field input,
+      .field select {
+        width: 100%; /* Alanların kapsayıcının tamamını kaplamasını sağlar. */
+        padding: 8px 10px; /* Alan içindeki metne nefes alanı verir. */
+        font-size: 13px; /* Yazı boyutunu belirler. */
+        font-family: inherit; /* Üst elemanın yazı tipini devralır. */
+        background: var(
+          --bg
+        ); /* Alan arka planını sayfa arka planı rengine ayarlar. */
+        border: 1px solid var(--border); /* Alan çevresine ince kenarlık ekler. */
+        border-radius: 6px; /* Alan köşelerini yuvarlatır. */
+      }
+
+      /* Input veya select odaklandığında uygulanacak stilleri tanımlar. */
+      .field input:focus,
+      .field select:focus {
+        outline: none; /* Tarayıcının varsayılan odak çizgisini kaldırır. */
+        border-color: var(
+          --clay
+        ); /* Odaktaki alanın kenarlığını vurgu rengine çevirir. */
+        background: #fff; /* Odaktaki alanın arka planını beyaz yapar. */
+      }
+
+      /* Form gönderme butonunu biçimlendirir. */
+      .btn-submit {
+        width: 100%; /* Butonun form genişliğini tamamen kaplamasını sağlar. */
+        background: var(
+          --clay
+        ); /* Ana vurgu rengini arka plan olarak kullanır. */
+        color: #fff; /* Buton metnini beyaz yapar. */
+        border: none; /* Varsayılan kenarlığı kaldırır. */
+        padding: 10px; /* Butonun iç boşluğunu belirler. */
+        font-size: 13px; /* Buton yazı boyutunu belirler. */
+        font-weight: 600; /* Buton metnini yarı kalın gösterir. */
+        border-radius: 6px; /* Buton köşelerini yuvarlatır. */
+        cursor: pointer; /* Fare üstündeyken tıklanabilir imlecini gösterir. */
+        margin-top: 6px; /* Üstteki alanla buton arasına boşluk ekler. */
+      }
+
+      /* Gönderme butonunun üzerine fare gelince uygulanacak stili tanımlar. */
+      .btn-submit:hover {
+        background: var(--clay-hover); /* Buton rengini koyulaştırır. */
+      }
+
+      /* Filtre araçlarını yatay hizalar. */
+      .filter-bar {
+        display: flex; /* Esnek kutu düzenini etkinleştirir. */
+        gap: 10px; /* Filtre elemanları arasına boşluk koyar. */
+        margin-bottom: 14px; /* Filtreler ile sipariş listesi arasına boşluk koyar. */
+      }
+
+      /* Sipariş kartlarını dikey olarak sıralar. */
+      .order-list {
+        display: flex; /* Esnek kutu düzenini etkinleştirir. */
+        flex-direction: column; /* Öğeleri dikey yönde dizer. */
+        gap: 10px; /* Sipariş kartları arasında boşluk bırakır. */
+      }
+
+      /* Tek bir sipariş kartının görünümünü tanımlar. */
+      .order-item {
+        background: var(
+          --bg
+        ); /* Kart arka planını açık sayfa rengine ayarlar. */
+        border: 1px solid var(--border); /* Kart kenarlığını ekler. */
+        border-radius: 6px; /* Kart köşelerini yuvarlatır. */
+        padding: 12px 14px; /* Kartın iç boşluğunu ayarlar. */
+        display: flex; /* İçerikleri esnek düzene geçirir. */
+        justify-content: space-between; /* Sol bilgi ile sağ eylem alanını iki uca iter. */
+        align-items: center; /* İçerikleri dikey eksende ortalar. */
+      }
+
+      /* Sipariş adını biçimlendirir. */
+      .order-item h5 {
+        font-size: 13px; /* Sipariş adı yazı boyutunu belirler. */
+        font-weight: 600; /* Sipariş adını yarı kalın gösterir. */
+      }
+
+      /* Sipariş fiyat bilgisini biçimlendirir. */
+      .order-item p {
+        font-size: 12px; /* Fiyat açıklamasının yazı boyutunu belirler. */
+        color: var(--muted); /* Fiyat açıklamasını soluk renkte gösterir. */
+      }
+
+      /* Kategori rozeti ve silme butonunu yatay hizalar. */
+      .meta-box {
+        display: flex; /* Esnek kutu düzenini etkinleştirir. */
+        align-items: center; /* Rozet ve butonu dikeyde ortalar. */
+        gap: 10px; /* Rozet ile buton arasına boşluk koyar. */
+      }
+
+      /* Kategori rozetinin temel görünümünü tanımlar. */
+      .badge {
+        font-size: 11px; /* Rozet yazı boyutunu belirler. */
+        padding: 2px 7px; /* Rozete iç boşluk ekler. */
+        border-radius: 4px; /* Rozet köşelerini yuvarlatır. */
+        font-weight: 600; /* Rozet metnini yarı kalın gösterir. */
+        background: #fef3c7; /* Varsayılan rozet arka planını belirler. */
+        color: #92400e; /* Varsayılan rozet metin rengini belirler. */
+        font-family: var(
+          --font-mono
+        ); /* Rozet metni için monospace font kullanır. */
+      }
+
+      /* Mobilya kategorisi rozetinin rengini belirler. */
+      .badge--mobilya {
+        background: #e0e7ff; /* Mobilya rozeti için açık mavi arka plan uygular. */
+        color: #3730a3; /* Mobilya rozeti için koyu mavi metin rengi uygular. */
+      }
+
+      /* Aydınlatma kategorisi rozetinin rengini belirler. */
+      .badge--aydinlatma {
+        background: #fef3c7; /* Aydınlatma rozeti için açık sarı arka plan uygular. */
+        color: #b45309; /* Aydınlatma rozeti için turuncu-kahverengi metin rengi uygular. */
+      }
+
+      /* Mutfak kategorisi rozetinin rengini belirler. */
+      .badge--seramik {
+        background: #d1fae5; /* Mutfak rozeti için açık yeşil arka plan uygular. */
+        color: #065f46; /* Mutfak rozeti için koyu yeşil metin rengi uygular. */
+      }
+
+      /* Silme butonunun normal hâlini biçimlendirir. */
+      .btn-del {
+        background: transparent; /* Buton arka planını şeffaf yapar. */
+        border: 1px solid var(--border); /* Buton çevresine ince kenarlık ekler. */
+        color: var(--muted); /* Buton metnini soluk renkte gösterir. */
+        font-size: 11px; /* Buton yazı boyutunu belirler. */
+        padding: 4px 8px; /* Butona iç boşluk ekler. */
+        border-radius: 4px; /* Buton köşelerini yuvarlatır. */
+        cursor: pointer; /* Fare üstündeyken tıklanabilir imlecini gösterir. */
+      }
+
+      /* Silme butonunun üzerine fare gelince uygulanacak stili tanımlar. */
+      .btn-del:hover {
+        background: #ef4444; /* Buton arka planını kırmızı yapar. */
+        color: #fff; /* Buton metnini beyaz yapar. */
+        border-color: #ef4444; /* Kenarlığı arka planla aynı kırmızı yapar. */
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Dashboard içeriğinin tamamını taşıyan ana kapsayıcıdır. -->
+    <div class="kokpit">
+      <!-- Sayfa başlığı alanını semantik olarak tanımlar. -->
+      <header class="header">
+        <!-- Küçük üst başlığı gösterir. -->
+        <span class="header__tag">Sipariş Takip</span>
+        <!-- Dashboard'un ana başlığını gösterir. -->
+        <h1 class="header__title">Sipariş Yönetim Kokpiti</h1>
+      </header>
+
+      <!-- Anlık özet sayılarını gösteren KPI alanıdır. -->
+      <section class="kpi-grid">
+        <!-- Kayıtlı sipariş adedini gösteren karttır. -->
+        <div class="kpi-card">
+          <span>Kayıtlı sipariş</span
+          ><!-- Kart açıklamasını gösterir. -->
+          <h3 id="kpiCount">0</h3>
+          <!-- JavaScript'in güncelleyeceği sipariş sayısını tutar. -->
+        </div>
+        <!-- Siparişlerin toplam tutarını gösteren karttır. -->
+        <div class="kpi-card">
+          <span>Toplam Sipariş Tutarı</span
+          ><!-- Kart açıklamasını gösterir. -->
+          <h3 id="kpiTotal">0 ₺</h3>
+          <!-- JavaScript'in güncelleyeceği toplam tutarı tutar. -->
+        </div>
+        <!-- Siparişlerin ortalama fiyatını gösteren karttır. -->
+        <div class="kpi-card">
+          <span>Ortalama Ürün Fiyatı</span
+          ><!-- Kart açıklamasını gösterir. -->
+          <h3 id="kpiAvg">0 ₺</h3>
+          <!-- JavaScript'in güncelleyeceği ortalama fiyatı tutar. -->
+        </div>
+      </section>
+
+      <!-- Form paneli ile sipariş listesi panelini içeren ana alandır. -->
+      <main class="layout">
+        <!-- Yeni sipariş ekleme formunun bulunduğu paneldir. -->
+        <section class="panel">
+          <h4>Yeni sipariş kaydı</h4>
+          <!-- Panel başlığını gösterir. -->
+
+          <!-- Gönderildiğinde yeni sipariş oluşturacak formdur. -->
+          <form id="orderForm">
+            <div class="field">
+              <!-- Ürün adı alanını gruplar. -->
+              <label for="prodName">Ürün Adı</label
+              ><!-- Etiketi ilgili input ile bağlar. -->
+              <input
+                type="text"
+                id="prodName"
+                placeholder="Sehpa"
+                required
+              /><!-- Ürün adı girişi; boş bırakılması engellenir. -->
+            </div>
+
+            <div class="field">
+              <!-- Kategori alanını gruplar. -->
+              <label for="prodCat">Kategori</label
+              ><!-- Etiketi ilgili select ile bağlar. -->
+              <select name="prodCat" id="prodCat">
+                <!-- Kategori seçimi için açılır liste oluşturur. -->
+                <option value="Mobilya">Mobilya</option>
+                <!-- Mobilya seçeneğini ekler. -->
+                <option value="Aydınlatma">Aydınlatma</option>
+                <!-- Aydınlatma seçeneğini ekler. -->
+                <option value="Mutfak">Mutfak</option>
+                <!-- Mutfak seçeneğini ekler. -->
+              </select>
+            </div>
+
+            <div class="field">
+              <!-- Fiyat alanını gruplar. -->
+              <label for="prodPrice">Fiyat</label
+              ><!-- Etiketi ilgili input ile bağlar. -->
+              <input
+                type="number"
+                id="prodPrice"
+                value="3250"
+                min="100"
+                step="50"
+                required
+              /><!-- Sayısal fiyat girişi; başlangıç, minimum ve artış miktarını belirler. -->
+            </div>
+
+            <button type="submit" class="btn-submit">Siparişi Kaydet</button
+            ><!-- Formu gönderen butondur. -->
+          </form>
+        </section>
+
+        <!-- Filtrelenmiş siparişlerin listelendiği paneldir. -->
+        <section class="panel">
+          <div class="filter-bar">
+            <!-- Arama ve kategori filtrelerini yatayda gruplar. -->
+            <input
+              type="text"
+              id="searchInput"
+              class="field"
+              style="margin-bottom: 0"
+              placeholder="Ürün adına göre filtrele"
+            /><!-- Ürün adına göre anlık filtreleme alanıdır. -->
+            <select
+              id="categoryFilter"
+              style="width: 130px; font-size: 12px; padding: 6px"
+            >
+              <!-- Kategori filtresi seçme alanıdır. -->
+              <option value="ALL">Tüm kategoriler</option>
+              <!-- Tüm kategorileri gösterecek seçenektir. -->
+              <option value="Mobilya">Mobilya</option>
+              <!-- Mobilya filtresidir. -->
+              <option value="Aydınlatma">Aydınlatma</option>
+              <!-- Aydınlatma filtresidir. -->
+              <option value="Mutfak">Mutfak</option>
+              <!-- Mutfak filtresidir. -->
+            </select>
+          </div>
+
+          <!-- JavaScript'in dinamik sipariş kartlarını ekleyeceği kapsayıcıdır. -->
+          <div id="orderContainer" class="order-list"></div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      // Uygulama açılırken görüntülenecek başlangıç sipariş dizisini tanımlar.
+      let orders = [
+        { id: 1, name: "Sehpa", category: "Mobilya", price: 6500 }, // İlk sipariş nesnesini ekler.
+        { id: 2, name: "Abajür", category: "Aydınlatma", price: 7500 }, // İkinci sipariş nesnesini ekler.
+        { id: 3, name: "Koltuk", category: "Mobilya", price: 8500 }, // Üçüncü sipariş nesnesini ekler.
+        { id: 4, name: "Bulaşık Makinesi", category: "Mutfak", price: 10000 }, // Dördüncü sipariş nesnesini ekler.
+        { id: 5, name: "Ocak", category: "Mutfak", price: 15000 }, // Beşinci sipariş nesnesini ekler.
+      ];
+
+      // Sipariş kartlarının ekleneceği DOM elemanını seçer.
+      const orderContainer = document.getElementById("orderContainer");
+      // Yeni sipariş formunu seçer.
+      const orderForm = document.getElementById("orderForm");
+      // Metin arama input'unu seçer.
+      const searchInput = document.getElementById("searchInput");
+      // Kategori filtre select elemanını seçer.
+      const categoryFilter = document.getElementById("categoryFilter");
+      // Sipariş adedi KPI elemanını seçer.
+      const kpiCount = document.getElementById("kpiCount");
+      // Toplam tutar KPI elemanını seçer.
+      const kpiTotal = document.getElementById("kpiTotal");
+      // Ortalama fiyat KPI elemanını seçer.
+      const kpiAvg = document.getElementById("kpiAvg");
+
+      // Verilen sipariş listesine göre üç KPI değerini güncelleyen fonksiyonu tanımlar.
+      const updateKPIs = (dataList) => {
+        kpiCount.textContent = dataList.length; // Sipariş adedini ilk KPI kartına yazar.
+
+        if (dataList.length === 0) {
+          // Liste boşsa tutar hesaplamadan sıfır değerleri gösterir.
+          kpiTotal.textContent = "0 ₺"; // Toplam tutarı sıfırlar.
+          kpiAvg.textContent = "0 ₺"; // Ortalama tutarı sıfırlar.
+          return; // Fonksiyonun kalanındaki hesaplama işlemlerini durdurur.
+        }
+
+        // reduce ile siparişlerin price değerlerini toplayarak toplam tutarı hesaplar.
+        const total = dataList.reduce((acc, curr) => acc + curr.price, 0);
+        // Toplamı Türkçe sayı biçimine dönüştürür ve para birimiyle ekrana yazar.
+        kpiTotal.textContent = `${total.toLocaleString("tr-TR")} ₺`;
+
+        // Toplam tutarı sipariş adedine bölerek ortalama fiyatı hesaplar.
+        const avg = total / dataList.length;
+        // Ortalamayı en yakın tam sayıya yuvarlar, Türkçe biçime dönüştürür ve ekrana yazar.
+        kpiAvg.textContent = `${Math.round(avg).toLocaleString("tr-TR")} ₺`;
+      };
+
+      // Aktif arama ve kategori filtresine göre siparişleri ekrana çizen fonksiyonu tanımlar.
+      const renderOrders = () => {
+        const term = searchInput.value.toLowerCase().trim(); // Arama metnini küçük harfe çevirir ve baş-son boşluklarını siler.
+        const selectedCat = categoryFilter.value; // Seçili kategori değerini alır.
+
+        // Sipariş dizisini hem isim hem kategori kriterine göre filtreler.
+        const filtered = orders.filter((order) => {
+          const matchesName = order.name.toLowerCase().includes(term); // Ürün adının arama metnini içerip içermediğini kontrol eder.
+          const matchesCategory =
+            selectedCat === "ALL" || order.category === selectedCat; // Tüm kategoriler veya seçili kategori eşleşmesini kontrol eder.
+          return matchesName && matchesCategory; // İki koşul da doğruysa siparişi sonuçlara dahil eder.
+        });
+
+        orderContainer.innerHTML = ""; // Önceki sipariş kartlarını kapsayıcıdan temizler.
+
+        if (filtered.length === 0) {
+          // Filtre sonrası hiç sipariş kalmadığını kontrol eder.
+          // Kullanıcıya boş durum mesajı gösterecek HTML'i yerleştirir.
+          orderContainer.innerHTML = `
+                    <div style="padding: 24px; text-align: center; color: var(--muted); font-size: 12px;">
+                        Kriterlere uygun ürün bulunamadı
+                    </div>
+                `;
+          updateKPIs([]); // Boş listeyi vererek KPI değerlerini sıfırlar.
+          return; // Sipariş kartı oluşturma döngüsüne girmeden fonksiyonu bitirir.
+        }
+
+        // Filtrelenmiş her sipariş için bir kart üretir.
+        filtered.forEach((order) => {
+          const item = document.createElement("article"); // Yeni bir semantik article elemanı oluşturur.
+          item.className = "order-item"; // Elemanın sipariş kartı stillerini almasını sağlar.
+          item.setAttribute("data-id", order.id); // Silme işleminde kullanılacak sipariş kimliğini HTML'e yazar.
+
+          // Kategoriye göre uygulanacak rozet sınıfını belirler.
+          const badgeClass =
+            order.category === "Mobilya"
+              ? "badge--mobilya" // Kategori Mobilya ise mavi rozet sınıfını seçer.
+              : order.category === "Aydınlatma"
+                ? "badge--aydinlatma" // Kategori Aydınlatma ise sarı rozet sınıfını seçer.
+                : "badge--seramik"; // Diğer durumda Mutfak için yeşil rozet sınıfını seçer.
+
+          // Sipariş verilerini kartın HTML içeriğine yerleştirir.
+          item.innerHTML = `
+                    <div>
+                        <h5>${order.name}</h5>
+                        <p>Birim fiyat: ${order.price.toLocaleString("tr-TR")} ₺</p>
+                    </div>
+                    <div class="meta-box">
+                        <span class="badge ${badgeClass}">${order.category}</span>
+                        <button class="btn-del" type="button" data-action="delete">Sil</button>
+                    </div>
+                `;
+
+          orderContainer.appendChild(item); // Oluşturulan kartı sipariş listesine ekler.
+        });
+
+        updateKPIs(filtered); // Ekrandaki filtrelenmiş siparişlere göre KPI kartlarını günceller.
+      };
+
+      // Form gönderildiğinde yeni sipariş oluşturacak olay dinleyicisini ekler.
+      orderForm.addEventListener("submit", (event) => {
+        event.preventDefault(); // Formun sayfayı yenileyerek varsayılan gönderim yapmasını engeller.
+
+        const name = document.getElementById("prodName").value.trim(); // Ürün adını alır ve baş-son boşluklarını temizler.
+        const category = document.getElementById("prodCat").value; // Seçilen kategori değerini alır.
+        const price = Number(document.getElementById("prodPrice").value); // Fiyat metnini sayısal değere dönüştürür.
+
+        const newOrder = {
+          id: Date.now(), // Çakışma riskini azaltmak için zaman damgasını benzersiz kimlik olarak kullanır.
+          name: name, // Girilen ürün adını nesneye ekler.
+          category: category, // Seçilen kategoriyi nesneye ekler.
+          price: price, // Girilen fiyatı nesneye ekler.
+        };
+
+        orders.push(newOrder); // Yeni siparişi ana sipariş dizisinin sonuna ekler.
+        orderForm.reset(); // Form alanlarını başlangıç değerlerine döndürür.
+        renderOrders(); // Listeyi ve KPI değerlerini güncel verilerle yeniden çizer.
+      });
+
+      // Liste içindeki silme butonlarına olay delegasyonu ile tıklama dinleyicisi ekler.
+      orderContainer.addEventListener("click", (event) => {
+        if (event.target.dataset.action === "delete") {
+          // Tıklanan elemanın silme eylemi olup olmadığını kontrol eder.
+          const item = event.target.closest(".order-item"); // Tıklanan butonun ait olduğu sipariş kartını bulur.
+          const id = Number(item.dataset.id); // Kartta saklanan kimliği sayıya dönüştürür.
+          orders = orders.filter((order) => order.id !== id); // Kimliği eşleşen siparişi diziden çıkarır.
+          renderOrders(); // Silme işleminden sonra listeyi ve KPI değerlerini yeniler.
+        }
+      });
+
+      searchInput.addEventListener("input", renderOrders); // Kullanıcı arama alanına yazdıkça listeyi yeniden filtreler.
+      categoryFilter.addEventListener("change", renderOrders); // Kullanıcı kategori değiştirdikçe listeyi yeniden filtreler.
+      renderOrders(); // Sayfa ilk açıldığında başlangıç siparişlerini ve KPI değerlerini ekrana çizer.
+    </script>
+  </body>
+</html>
